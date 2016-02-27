@@ -21,20 +21,21 @@ end
 
 
 type NGram
-    parents::Vector{NGramNode}
+    n::Int
+    children::Vector{NGramNode}
 end
-NGram() = NGram(Vector{NGramNode}())
+NGram(n) = NGram(n, Vector{NGramNode}())
 
-function NGram(words::Vector, n)
+function NGram(n, words::Vector)
     @assert n > 0
-    ret = NGram()
-    store_ngrams!(ret.parents, each_cons(words, n))
-    sort_nodes!(ret.parents)
+    ret = NGram(n)
+    store_ngrams!(ret.children, each_cons(words, n))
+    sort_nodes!(ret.children)
     ret
 end
 
-function NGram(s::AbstractString, n)
-    NGram(split(s), n)
+function NGram(n, s::AbstractString)
+    NGram(n, split(s))
 end
 
 
