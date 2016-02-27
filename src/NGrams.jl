@@ -39,6 +39,29 @@ function NGram(n, s::AbstractString)
 end
 
 
+function plain(ngram::NGram)
+    map(plain, ngram.children)
+end
+
+function plain(node::NGramNode)
+    if length(node.children) > 0
+        (node.word, node.count, map(plain, node.children))
+    else
+        (node.word, node.count, [])
+    end
+end
+
+
+function query(ngram::NGram, words, nmax)
+    ret = Vector{AbstractString}()
+    n_total = 1
+    for i in eachindex(words)
+        word = words[i]
+        n_total > nmax && return ret
+    end
+end
+
+
 function bundle{T}(wordss::Vector{Vector{T}})
     ret = Dict{T, Vector{Vector{T}}}()
     for words in wordss
